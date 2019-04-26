@@ -8,7 +8,8 @@ class MoshCourses::CLI
     def call
         # enter your code here
         # puts "hello you"
-        running
+        puts MoshCourses::MoshScraper.new.getCourseDescription("/courses/293204").inspect
+        # running
     end
 
 
@@ -18,12 +19,12 @@ class MoshCourses::CLI
                 bloc: define_method("list_courses"){
                                                         done = false
                                                         if !MoshCourses::Course.all.empty?
-                                                            puts "Here is the Courses list on openClassroom: \n\n" 
+                                                            puts "Here is the Courses list on Mosh: \n\n" 
                                                             MoshCourses::Course.all.each_with_index{|c, i| c.toPrint(i) }
                                                             done = true
                                                             self.deepState += 1
                                                         else
-                                                            puts "There is no course availaible on openClassroom. List is Empty"
+                                                            puts "There is no course availaible on Mosh. List is Empty"
                                                         end
                                                         self.openedCourse = nil
                                                         return done

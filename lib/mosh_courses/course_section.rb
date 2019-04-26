@@ -1,5 +1,5 @@
 class MoshCourses::Section
-    attr_accessor :url, :title
+    attr_accessor :items, :title
     @@all_s = []
     def initialize(section_ash)
         author_ash.each do |attribute, value|
