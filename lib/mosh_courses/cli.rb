@@ -2,7 +2,8 @@ class MoshCourses::CLI
     attr_accessor :openedCourse, :deepState
     def initialize
         self.deepState = 1
-    ends
+        self.openedCourse = nil
+    end
 
     def call
         # enter your code here
@@ -12,19 +13,19 @@ class MoshCourses::CLI
 
 
 
-    Menu ={ "list" => {label: "List all openClassroom courses",
+    Menu ={ "list" => {label: "List all Mosh courses",
                 deep_state: 1,
                 bloc: define_method("list_courses"){
                                                         done = false
                                                         if !MoshCourses::Course.all.empty?
-                                                            puts "Here is the Coourses list on openClassroom: \n\n" 
+                                                            puts "Here is the Courses list on openClassroom: \n\n" 
                                                             MoshCourses::Course.all.each_with_index{|c, i| c.toPrint(i) }
                                                             done = true
+                                                            self.deepState += 1
                                                         else
                                                             puts "There is no course availaible on openClassroom. List is Empty"
                                                         end
                                                         self.openedCourse = nil
-                                                        self.deepState += 1
                                                         return done
                                                     }
                 },
@@ -44,31 +45,24 @@ class MoshCourses::CLI
                                                         
                                                         self.openedCourse = MoshCourses::Course.getCourse(val-1)
                                                         #self.openedCourse.printCurrentPage	
-                                                        send(Menu["currPage"][:bloc])	
+                                                        send(Menu["showOpenC"][:bloc])	
                                                         self.deepState += 1										
                                                     end
                                                     return done
                                                 }
                 },
-        "prevPage" => {label: "View previous page",
+        "showOpenC" => {label: "View previous page",
                 deep_state: 3,
                 bloc: define_method("print_course"){   
-                                                    self.openedCourse.printPreviousPage
+                                                    self.openedCourse.show
                                                     return true 	
                                                 }
                 },
-        "currPage" => {label: "View current page",
+        "DescribeC" => {label: "View the course page",
                 deep_state: 3,
                 bloc: define_method("print_course"){   
-                                                    self.openedCourse.printCurrentPage
+                                                    self.openedCourse.showSection
                                                     return true 	
-                                                }
-                },
-        "nextPage" => {label: "View next page",
-                deep_state: 3,
-                bloc: define_method("print_course"){ 
-                                                    self.openedCourse.printNextPage	
-                                                    return true 
                                                 }
                 },
         "exit" => {label: "Exit",
@@ -122,7 +116,7 @@ class MoshCourses::CLI
     def running
         count = 0
         exit = false
-        self.initialised
+        # self.initialised
         
         while !terminated?(count)
             mCount = 0

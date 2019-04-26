@@ -1,10 +1,7 @@
 class MoshCourses::Description
     attr_accessor :sections
     @@all_d = []
-    def initialize(author_ash)
-        author_ash.each do |attribute, value|
-            self.send("#{attribute}=", value)
-        end
+    def initialize()
         @@all_d << self
     end
 

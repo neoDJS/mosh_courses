@@ -45,4 +45,10 @@ class MoshCourses::Course
         puts "#{val+1} - #{self.to_s}"
         puts "------------------------------------------------------------------------------------"
     end
+
+    def show
+    end
+
+    def showSection
+    end
 end
