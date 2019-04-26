@@ -1,4 +1,5 @@
 require "mosh_courses/version"
+require_relative "stringClass"
 
 module MoshCourses
   class Error < StandardError; end

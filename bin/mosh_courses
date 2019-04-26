@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require "./lib/mosh_courses"
+MoshCourses::CLI.new.call
