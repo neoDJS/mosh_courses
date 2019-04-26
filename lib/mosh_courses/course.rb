@@ -27,8 +27,8 @@ class MoshCourses::Course
         @author = MoshCourses::Author.new(author_ash)
     end
 
-    def description=(coursePart_arr)
-        @description = ZeroCourses::Description.create_from_collection(coursePart_arr)
+    def description=(courseSect_arr)
+        @description = MoshCourses::Description.create_from_collection(courseSect_arr)
     end
 
     def add_attribute(attribute_hash)
@@ -38,7 +38,7 @@ class MoshCourses::Course
     end 
 
     def to_s
-        "#{self.title} #{self.subtitle} #{self.price}"
+        "#{self.title} - #{self.price}"
     end
 
     def toPrint(val = -1)

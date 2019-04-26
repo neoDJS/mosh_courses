@@ -8,8 +8,9 @@ class MoshCourses::CLI
     def call
         # enter your code here
         # puts "hello you"
-        puts MoshCourses::MoshScraper.new.getCourseDescription("/courses/293204").inspect
-        # running
+        # puts MoshCourses::MoshScraper.new.getCourses.inspect
+        # puts MoshCourses::MoshScraper.new.getCourseDescription("/courses/293204").inspect
+        running
     end
 
 
@@ -56,11 +57,12 @@ class MoshCourses::CLI
                 deep_state: 3,
                 bloc: define_method("print_course"){   
                                                     self.openedCourse.show
+                                                    self.deepState += 1				
                                                     return true 	
                                                 }
                 },
         "DescribeC" => {label: "View the course page",
-                deep_state: 3,
+                deep_state: 4,
                 bloc: define_method("print_course"){   
                                                     self.openedCourse.showSection
                                                     return true 	
@@ -110,14 +112,13 @@ class MoshCourses::CLI
     end
 
     def initialised
-        MoshCourses::Course.create_from_collection(MoshCourses::ScraperMosh.scrape_courses_page)
-        MoshCourses::Course.all.each{|c| c.add_attribute(scrape_course_detail_page(c.profile_url))}
+        MoshCourses::Course.create_from_collection(MoshCourses::MoshScraper.new.getCourses)
     end
 
     def running
         count = 0
         exit = false
-        # self.initialised
+        self.initialised
         
         while !terminated?(count)
             mCount = 0

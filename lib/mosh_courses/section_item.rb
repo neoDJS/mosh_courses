@@ -2,7 +2,7 @@ class MoshCourses::Item
     attr_accessor :url, :label
     @@all_i = []
     def initialize(item_ash)
-        author_ash.each do |attribute, value|
+        item_ash.each do |attribute, value|
             self.send("#{attribute}=", value)
         end
         @@all_i << self

@@ -9,6 +9,12 @@ class MoshCourses::Description
         @@all_d
     end
 
+    def self.create_from_collection(section_arr)
+        desc = self.new
+        desc.sections=(section_arr)
+        desc
+    end
+
     def sections=(section_arr)
         @sections = MoshCourses::Section.create_from_collection(section_arr)
     end

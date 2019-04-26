@@ -2,10 +2,14 @@ class MoshCourses::Section
     attr_accessor :items, :title
     @@all_s = []
     def initialize(section_ash)
-        author_ash.each do |attribute, value|
+        section_ash.each do |attribute, value|
             self.send("#{attribute}=", value)
         end
         @@all_s << self
+    end
+
+    def items=(item_arr)
+        @items = MoshCourses::Item.create_from_collection(item_arr)
     end
 
     def self.create_from_collection(section_arr)

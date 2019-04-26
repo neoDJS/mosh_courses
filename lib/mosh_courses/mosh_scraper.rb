@@ -16,10 +16,11 @@ class MoshCourses::MoshScraper
             ash[:title] = course.css("div.course-listing-title").text
             ash[:subtitle] = course.css("div.course-listing-subtitle").text
             ash[:price] = course.css("div.course-price").text
-            ash[:img_url] = course.css("img.course-box-image")['src']
+            ash[:img_url] = course.css("img.course-box-image").attr('src').value
             ash[:author] = {}
-            ash[:author][:profile_url] = course.css("img.img-circle")['src']
-            ash[:author][:name] = course.css("div.course-author-name").text
+            ash[:author][:profile_url] = course.css("img.img-circle").attr('src').value
+            ash[:author][:name] = course.css("div.course-author-name").text            
+            ash[:description] = getCourseDescription(course['data-course-url'])
             ash
         end
     end
