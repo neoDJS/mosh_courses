@@ -1,6 +1,7 @@
 class MoshCourses::Course
     attr_accessor :url, :title, :subtitle, :price, :img_url, :author, :description
     @@all_c = []
+    @@all_s_c = []
 
     def initialize(course_ash)
         course_ash.each do |attribute, value|
@@ -16,11 +17,20 @@ class MoshCourses::Course
     end
 
     def self.all
+        return @@all_s_c unless @@all_s_c.empty?
         @@all_c
     end
 
     def self.getCourse(index)
-        self.all[index] if !self.all.empty?
+        self.all[index] unless self.all.empty?
+    end
+
+    def self.search(matching)
+        @@all_s_c = self.all.select{|c| c.title =~ /[a-zA-Z\s]*(#{matching})[a-zA-Z\s]*/}
+    end
+
+    def self.clear_search
+        @@all_s_c.clear
     end
 
     def author=(author_ash)
@@ -38,7 +48,7 @@ class MoshCourses::Course
     end 
 
     def to_s
-        "#{self.title} - #{self.price}"
+        "#{self.title.blue} - #{self.price}"
     end
 
     def toPrint(val = -1)
@@ -47,8 +57,15 @@ class MoshCourses::Course
     end
 
     def show
+        puts "#{self.title.blue} - #{self.price.red}"
+        puts "#{self.url}"
+        puts "#{self.subtitle.bg_blue}"
+        puts "\t\t\t\t\t#{self.author.name.red}"
     end
 
     def showSection
+        puts "#{self.title.blue} - #{self.author.name.red}"
+        puts "#{self.url}"
+        self.description.bePrinted
     end
 end

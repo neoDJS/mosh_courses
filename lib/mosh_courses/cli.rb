@@ -1,6 +1,7 @@
 class MoshCourses::CLI
-    attr_accessor :openedCourse, :deepState
+    attr_accessor :openedCourse, :deepState, :currState
     def initialize
+        self.currState = 'list'
         self.deepState = 1
         self.openedCourse = nil
     end
@@ -19,7 +20,9 @@ class MoshCourses::CLI
                 deep_state: 1,
                 bloc: define_method("list_courses"){
                                                         done = false
+                                                        MoshCourses::Course.clear_search
                                                         if !MoshCourses::Course.all.empty?
+                                                            self.currState = 'list'
                                                             puts "Here is the Courses list on Mosh: \n\n" 
                                                             MoshCourses::Course.all.each_with_index{|c, i| c.toPrint(i) }
                                                             done = true
@@ -34,13 +37,25 @@ class MoshCourses::CLI
         "search" => {label: "Search a course by matching name",
                 deep_state: 1,
                 bloc: define_method("find_course"){ 
-                                                    puts "implementation loading"
-                                                    self.deepState += 1
+                                                    done = false
+                                                    puts "\n\t\tenter your searching option : "
+                                                    search = getCourseName
+                                                    if !MoshCourses::Course.all.empty?
+                                                        self.currState = 'search'
+                                                        puts "Here is the matching search list Courses on Mosh: \n\n" 
+                                                        MoshCourses::Course.search(search).each_with_index{|c, i| c.toPrint(i) }
+                                                        done = true
+                                                        self.deepState += 1
+                                                    else
+                                                        puts "There is no course availaible on Mosh. List is Empty"
+                                                    end
+                                                    self.openedCourse = nil
+                                                    return done
                                                 }
                 },
         "choose" => {label: "Choose a course",
                 deep_state: 2,
-                bloc: define_method("find_course"){ 
+                bloc: define_method("chose_course"){ 
                                                     done = !MoshCourses::Course.all.empty?
                                                     if done
                                                         val = getAnInteger(1, MoshCourses::Course.all.length)
@@ -61,9 +76,9 @@ class MoshCourses::CLI
                                                     return true 	
                                                 }
                 },
-        "DescribeC" => {label: "View the course page",
+        "describeC" => {label: "View the course page",
                 deep_state: 4,
-                bloc: define_method("print_course"){   
+                bloc: define_method("print_course_detail"){   
                                                     self.openedCourse.showSection
                                                     return true 	
                                                 }
@@ -99,6 +114,18 @@ class MoshCourses::CLI
         cInt.to_i
     end
 
+    def getCourseName
+        count = 0
+        cCname = ""
+        m = /\A[a-zA-Z\s]+\z/
+        while !cCname.validate(m) 
+            puts "Invalid search option.\n Please choose again : " if count>0
+            cCname = gets.strip
+            count += 1
+        end
+        cCname
+    end
+
     def getCommand
         count = 0
         cCmd = ""
@@ -111,14 +138,14 @@ class MoshCourses::CLI
         cCmd
     end
 
-    def initialised
+    def init
         MoshCourses::Course.create_from_collection(MoshCourses::MoshScraper.new.getCourses)
     end
 
     def running
         count = 0
         exit = false
-        self.initialised
+        self.init
         
         while !terminated?(count)
             mCount = 0

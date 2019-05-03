@@ -21,4 +21,11 @@ class MoshCourses::Section
     def self.all
         @@all_s
     end
+
+    def printed
+        puts "#{self.title.bg_green}"
+        self.items.each do |item|
+            puts "\t#{item.label.green}"
+        end
+    end
 end

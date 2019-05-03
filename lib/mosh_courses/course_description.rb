@@ -18,4 +18,10 @@ class MoshCourses::Description
     def sections=(section_arr)
         @sections = MoshCourses::Section.create_from_collection(section_arr)
     end
+
+    def bePrinted
+        self.sections.each do |section|
+            section.printed
+        end
+    end
 end
