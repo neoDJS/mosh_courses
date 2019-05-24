@@ -93,9 +93,9 @@ class MoshCourses::CLI
                 }
     }
 
-    def terminated?(round)
+    def terminated?(opt)#(round)
         finishing = false
-        if round > 0
+        if opt == "exit" # round > 0
             puts "\ndo you want to exit the program?(y/n)"
             finishing = gets.strip.chars[0].downcase == "y" ? true : false 
         end
@@ -144,10 +144,11 @@ class MoshCourses::CLI
 
     def running
         count = 0
+        opt = ''
         exit = false
         self.init
         
-        while !terminated?(count)
+        while !terminated?(opt)#(count)
             mCount = 0
             puts "\n\n\t\tWELCOME to my Mosh courses library App\n".blue if count < 1
             puts "\tHere is the menu: "
