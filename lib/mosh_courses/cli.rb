@@ -58,6 +58,7 @@ class MoshCourses::CLI
                 bloc: define_method("chose_course"){ 
                                                     done = !MoshCourses::Course.all.empty?
                                                     if done
+                                                        puts "Choose the course number you want to select : "
                                                         val = getAnInteger(1, MoshCourses::Course.all.length)
                                                         
                                                         self.openedCourse = MoshCourses::Course.getCourse(val-1)
