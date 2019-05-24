@@ -26,7 +26,7 @@ class MoshCourses::Course
     end
 
     def self.search(matching)
-        @@all_s_c = self.all.select{|c| c.title =~ /[a-zA-Z\s]*(#{matching})[a-zA-Z\s]*/}
+        @@all_s_c = self.all.select{|c| c.title.downcase =~ /[a-zA-Z\s]*(#{matching.downcase})[a-zA-Z\s]*/}
     end
 
     def self.clear_search
